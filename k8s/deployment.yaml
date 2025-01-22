@@ -17,3 +17,7 @@ spec:
         image: jdark91/back-profile:latest
         ports:
         - containerPort: 3000
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'Maintenance mode enabled' > /usr/share/nginx/html/index.html"]
