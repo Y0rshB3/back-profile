@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-profile
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: back-profile
+  template:
+    metadata:
+      labels:
+        app: back-profile
+    spec:
+      containers:
+      - name: back-container
+        image: jdark91/back-profile:latest
+        ports:
+        - containerPort: 3000
