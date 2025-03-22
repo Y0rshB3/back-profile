@@ -4,6 +4,9 @@ import { InfoExperience } from '../models/InfoExperience';
 
 export async function getExperience(req: Request, res: Response): Promise<void> {
   const experienceRepository = AppDataSource.getRepository(InfoExperience);
-  const infoExperience = await experienceRepository.find();
+  const language = req.query.language;
+  const infoExperience = await experienceRepository.find({
+    where: { language: language },
+  });
   res.json(infoExperience);
 }
