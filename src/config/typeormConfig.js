@@ -11,6 +11,23 @@ const Portfolio = require('../models/InfoPortfolio').InfoPortfolio;
 const Service = require('../models/InfoService').InfoService;
 const Social = require('../models/InfoSocial').InfoSocial;
 const Contact = require('../models/contact').Contact;
+const Modules = require('../models/modules').Module;
+
+/* const tempDataSource = new DataSource({
+  type: "mysql",
+  host: process.env.hostDatabase,
+  port: 3306,
+  username: process.env.userDatabase,
+  password: process.env.passwordDatabase,
+});
+
+async function ensureDatabaseExists() {
+  if (!AppDataSource.isInitialized && !tempDataSource.isInitialized) {
+    await tempDataSource.initialize();
+    await tempDataSource.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.database}\`;`);
+    await tempDataSource.destroy();
+  }
+} */
 
 const AppDataSource = new DataSource({
   type: "mysql",
@@ -32,9 +49,19 @@ const AppDataSource = new DataSource({
     Service,
     Social,
     Contact,
+    Modules,
   ],
-  synchronize: false,
+  synchronize: true,
 });
+
+/* async function initializeDatabase() {
+  if (!AppDataSource.isInitialized) {
+    await ensureDatabaseExists();
+    await AppDataSource.initialize();
+  }
+}
+
+initializeDatabase().catch((err) => console.error("Error DB:", err)); */
 
 module.exports = {
   AppDataSource
