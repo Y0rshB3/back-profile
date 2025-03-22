@@ -8,11 +8,18 @@ export class InfoExperience {
   id!: number;
 
   @Column()
-  title!: string;
+  company!: string;
   @Column()
-  duration!: string;
+  position!: string;
   @Column()
-  subTitle!: string;
-  @Column()
-  text!: string;
+  startDate!: string;
+  @Column({ nullable: true })
+  endDate!: string | null;
+  @Column({ type: "text" })
+  description!: string;
+  @Column("simple-array")
+  technologies!: string[];
+  @Column({ type: "enum", enum: ["es", "en", "fr"], default: "es" })
+  language!: "es" | "en" | "fr";
+
 }
