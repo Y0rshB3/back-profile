@@ -8,7 +8,7 @@ import apiRouterInfo from './routes.info';
 const app = express();
 
 AppDataSource.initialize().then(() => {
-    console.log("Data Source has been initialized!");
+    console.log();
 }).catch((err) => {
     console.error("Error during Data Source initialization:", err);
 });
@@ -18,6 +18,6 @@ app.use(express.json());
 app.use('/api/v1/info', apiRouterInfo);
 app.use('/api/v1', apiRouter);
 
-app.listen(3000, '0.0.0.0', () => {
-    console.log('Servidor corriendo en el puerto 3000');
+app.listen(process.env.portListen || 4000, "0.0.0.0", () => {
+    console.log(`Servidor corriendo en el puerto ${process.env.portListen || 4000}`);
 });
