@@ -18,6 +18,6 @@ app.use(express.json());
 app.use('/api/v1/info', apiRouterInfo);
 app.use('/api/v1', apiRouter);
 
-app.listen(process.env.portListen || 4000, "0.0.0.0", () => {
-    console.log(`Servidor corriendo en el puerto ${process.env.portListen || 4000}`);
+app.listen(Number(process.env.portListen) || 4000, "0.0.0.0", () => {
+    console.log(`Servidor corriendo en el puerto ${Number(process.env.portListen) || 4000}`);
 });
