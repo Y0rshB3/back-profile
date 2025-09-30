@@ -1,11 +1,50 @@
 import { Request, Response } from 'express';
+import axios from 'axios';
 import { AppDataSource } from '../config/typeormConfig';
 import { Contact } from '../models/contact';
 import { EmailService } from '../services/emailService';
 
 const emailService = new EmailService();
 
+async function verifyRecaptcha(token: string): Promise<boolean> {
+  try {
+    const response = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify`,
+      null,
+      {
+        params: {
+          secret: process.env.RECAPTCHA_SECRET_KEY,
+          response: token,
+        },
+      }
+    );
+
+    const { success, score } = response.data;
+    
+    // For reCAPTCHA v3, check if score is above threshold (0.5 is recommended)
+    return success && score >= 0.5;
+  } catch (error) {
+    console.error('Error verifying reCAPTCHA:', error);
+    return false;
+  }
+}
+
 export async function create(req: Request, res: Response): Promise<void> {
+  // Verify reCAPTCHA token
+  const { recaptchaToken } = req.body;
+  
+  if (!recaptchaToken) {
+    res.status(400).json({ message: 'reCAPTCHA token is required' });
+    return;
+  }
+
+  const isHuman = await verifyRecaptcha(recaptchaToken);
+  
+  if (!isHuman) {
+    res.status(400).json({ message: 'reCAPTCHA verification failed. Please try again.' });
+    return;
+  }
+
   if (paramsRequired(req.body) === false) {
     res.status(400).json({ message: 'Missing parameters' });
     return;

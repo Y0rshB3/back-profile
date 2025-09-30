@@ -42,6 +42,7 @@ jobs:
           SMTP_SECURE=${{ secrets.SMTP_SECURE }}
           SMTP_USER=${{ secrets.SMTP_USER }}
           SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
+          RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }}
           ENVEOF
           
           echo "Installing dependencies..."
