@@ -19,10 +19,10 @@ jobs:
     - name: Deploy to Raspberry Pi
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: $${{}} secrets.RASPBERRY_HOST {{'}}'}}
-        username: $${{}} secrets.RASPBERRY_USER {{'}}'}}
-        key: $${{}} secrets.RASPBERRY_SSH_KEY {{'}}'}}
-        port: $${{}} secrets.RASPBERRY_PORT || 22 {{'}}'}}
+        host: ${{ secrets.RASPBERRY_HOST }}
+        username: ${{ secrets.RASPBERRY_USER }}
+        key: ${{ secrets.RASPBERRY_SSH_KEY }}
+        port: ${{ secrets.RASPBERRY_PORT || 22 }}
         script: |
           echo "Starting backend deployment..."
           cd /home/y0rshb3/devops/temp_backend
@@ -32,16 +32,16 @@ jobs:
           
           echo "Restoring environment variables..."
           cat > .env << ENVEOF
-          portListen=$${{}} secrets.PORT {{'}}'}}
-          hostDatabase=$${{}} secrets.DB_HOST {{'}}'}}
-          userDatabase=$${{}} secrets.DB_USER {{'}}'}}
-          passwordDatabase=$${{}} secrets.DB_PASSWORD {{'}}'}}
-          database=$${{}} secrets.DB_NAME {{'}}'}}
-          SMTP_HOST=$${{}} secrets.SMTP_HOST {{'}}'}}
-          SMTP_PORT=$${{}} secrets.SMTP_PORT {{'}}'}}
-          SMTP_SECURE=$${{}} secrets.SMTP_SECURE {{'}}'}}
-          SMTP_USER=$${{}} secrets.SMTP_USER {{'}}'}}
-          SMTP_PASSWORD=$${{}} secrets.SMTP_PASSWORD {{'}}'}}
+          portListen=${{ secrets.PORT }}
+          hostDatabase=${{ secrets.DB_HOST }}
+          userDatabase=${{ secrets.DB_USER }}
+          passwordDatabase=${{ secrets.DB_PASSWORD }}
+          database=${{ secrets.DB_NAME }}
+          SMTP_HOST=${{ secrets.SMTP_HOST }}
+          SMTP_PORT=${{ secrets.SMTP_PORT }}
+          SMTP_SECURE=${{ secrets.SMTP_SECURE }}
+          SMTP_USER=${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
           ENVEOF
           
           echo "Installing dependencies..."
