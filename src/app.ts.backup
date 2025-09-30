@@ -1,0 +1,23 @@
+require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import { AppDataSource } from './config/typeormConfig';
+import apiRouter from './routes';
+import apiRouterInfo from './routes.info';
+
+const app = express();
+
+AppDataSource.initialize().then(() => {
+    console.log();
+}).catch((err) => {
+    console.error("Error during Data Source initialization:", err);
+});
+
+app.use(cors());
+app.use(express.json());
+app.use('/api/v1/info', apiRouterInfo);
+app.use('/api/v1', apiRouter);
+
+app.listen(process.env.portListen || 4000, '0.0.0.0', () => {
+    console.log();
+});

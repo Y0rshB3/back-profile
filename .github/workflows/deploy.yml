@@ -31,6 +31,11 @@ jobs:
           userDatabase=${{ secrets.DB_USER }}
           passwordDatabase=${{ secrets.DB_PASSWORD }}
           database=${{ secrets.DB_NAME }}
+          SMTP_HOST=${{ secrets.SMTP_HOST }}
+          SMTP_PORT=${{ secrets.SMTP_PORT }}
+          SMTP_SECURE=${{ secrets.SMTP_SECURE }}
+          SMTP_USER=${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
           ENVEOF
           
           echo "Installing dependencies..."

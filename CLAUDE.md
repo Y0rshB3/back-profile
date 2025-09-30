@@ -33,6 +33,11 @@ hostDatabase=172.17.0.4
 userDatabase=root
 passwordDatabase=***
 database=portfolio
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=contact@y0rshb3.com
+SMTP_PASSWORD=***
 ```
 
 **IMPORTANT**: The .env file is NOT in the repository. It's created automatically during deployment via GitHub Actions using GitHub Secrets.
@@ -73,6 +78,11 @@ https://github.com/Y0rshB3/back-profile
 - `DB_USER`: root
 - `DB_PASSWORD`: Database password
 - `DB_NAME`: portfolio
+- `SMTP_HOST`: SMTP server host
+- `SMTP_PORT`: SMTP server port (587 or 465)
+- `SMTP_SECURE`: true for 465, false for 587
+- `SMTP_USER`: contact@y0rshb3.com
+- `SMTP_PASSWORD`: SMTP password or app password
 
 ### Deployment Process
 1. SSH to Raspberry Pi using key authentication
