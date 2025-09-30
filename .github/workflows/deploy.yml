@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Notify deployment start
       run: |
-        curl -X POST http://186.115.118.183:4000/api/v1/deploy-webhook \
+        curl -X POST http://y0rshb3.com:4000/api/v1/deploy-webhook \
           -H "Content-Type: application/json" \
           -d '{"status":"starting","repository":"backend"}' || true
     
@@ -61,6 +61,6 @@ jobs:
     - name: Notify deployment finished
       if: always()
       run: |
-        curl -X POST http://186.115.118.183:4000/api/v1/deploy-webhook \
+        curl -X POST http://y0rshb3.com:4000/api/v1/deploy-webhook \
           -H "Content-Type: application/json" \
           -d '{"status":"finished","repository":"backend"}' || true
