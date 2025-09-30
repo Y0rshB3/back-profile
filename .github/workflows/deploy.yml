@@ -1,32 +1,48 @@
-name: Backend Deployment
+name: Deploy Backend
 
 on:
   push:
-    branches:
-      - master
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Log in to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-    - name: Build Docker image
-      run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/back-profile:latest .
-
-    - name: Push Docker image
-      run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/back-profile:latest
-
-    - name: Deploy to Kubernetes
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
-      run: |
-        echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
-        kubectl --kubeconfig=kubeconfig.yaml apply -f k8s/deployment.yaml
+    - name: Deploy to Raspberry Pi
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.RASPBERRY_HOST }}
+        username: ${{ secrets.RASPBERRY_USER }}
+        key: ${{ secrets.RASPBERRY_SSH_KEY }}
+        port: ${{ secrets.RASPBERRY_PORT || 22 }}
+        script: |
+          echo "Starting backend deployment..."
+          cd /home/y0rshb3/devops/temp_backend
+          
+          echo "Pulling latest changes..."
+          git pull origin main
+          
+          echo "Restoring environment variables..."
+          cat > .env << ENVEOF
+          portListen=${{ secrets.PORT }}
+          hostDatabase=${{ secrets.DB_HOST }}
+          userDatabase=${{ secrets.DB_USER }}
+          passwordDatabase=${{ secrets.DB_PASSWORD }}
+          database=${{ secrets.DB_NAME }}
+          ENVEOF
+          
+          echo "Installing dependencies..."
+          npm install
+          
+          echo "Restarting backend container..."
+          docker restart backend
+          
+          echo "Waiting for backend to start..."
+          sleep 5
+          
+          echo "Testing backend health..."
+          curl -f http://localhost:4000/api/v1/info/home && echo "Backend is healthy!" || echo "Backend health check failed"
+          
+          echo "Backend deployed successfully!"
