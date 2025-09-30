@@ -1,1 +1,1 @@
-# Backend Portfolio API
+# Backend API with reCAPTCHA validation
