@@ -29,24 +29,24 @@ Frontend (Mostrar respuesta)
 
 ## ✅ Tareas a Implementar
 
-### **FASE 1: Base de Datos**
-- [ ] **Tarea 1.1** - Crear entidad `ChatUser`
+### **FASE 1: Base de Datos** ✅ COMPLETADA
+- [x] **Tarea 1.1** - Crear entidad `ChatUser`
   - Campos: id, name, email, ipAddress, createdAt, blocked, strikeCount
   - Guardar nombre, email, IP del usuario
   - strikeCount: contador de insultos (0-3)
   - blocked: boolean para bloqueo permanente
 
-- [ ] **Tarea 1.2** - Crear entidad `ChatMessage`
+- [x] **Tarea 1.2** - Crear entidad `ChatMessage`
   - Campos: id, userId (FK), message, response, language, timestamp
   - Guardar pregunta del usuario + respuesta de la IA
   - language: "es" | "en" | "fr"
 
-- [ ] **Tarea 1.3** - Crear entidad `BlockedIP`
+- [x] **Tarea 1.3** - Crear entidad `BlockedIP`
   - Campos: id, ipAddress, reason, blockedAt, strikes
   - Registrar IPs bloqueadas con motivo
   - strikes: número de insultos antes del bloqueo
 
-- [ ] **Tarea 1.4** - Crear entidad `PortfolioSummary`
+- [x] **Tarea 1.4** - Crear entidad `PortfolioSummary`
   - Campos: id, section, content, language, updatedAt
   - Tabla de resumen optimizado para el chatbot
   - Secciones: "about", "skills_summary", "experience_summary", "projects_summary", "contact", "availability"
@@ -59,8 +59,8 @@ Frontend (Mostrar respuesta)
 
 ---
 
-### **FASE 2: Servicios AI**
-- [ ] **Tarea 2.1** - Instalar dependencias
+### **FASE 2: Servicios AI** ✅ COMPLETADA
+- [x] **Tarea 2.1** - Instalar dependencias
   ```bash
   npm install openai @anthropic-ai/sdk bad-words-es
   ```
@@ -68,14 +68,14 @@ Frontend (Mostrar respuesta)
   - @anthropic-ai/sdk: Cliente de Claude (Anthropic)
   - bad-words-es: Filtro de palabras ofensivas en español
 
-- [ ] **Tarea 2.2** - Crear `src/services/aiService.ts`
+- [x] **Tarea 2.2** - Crear `src/services/aiService.ts`
   - Función `generateResponse(message, context, language)`
   - Usar OpenAI GPT-4o-mini (económico: $0.15/1M tokens input)
   - Alternativa: Claude Haiku ($0.25/1M tokens input)
   - Implementar el PROMPT SYSTEM exacto que proporcionaste
   - Manejo de errores y timeouts
 
-- [ ] **Tarea 2.3** - Crear `src/services/contextBuilderService.ts`
+- [x] **Tarea 2.3** - Crear `src/services/contextBuilderService.ts`
   - Función `buildContext(query, language)`
   - Detectar qué información necesita la pregunta:
     - Si pregunta por skills → buscar en InfoSkill
@@ -96,7 +96,7 @@ Frontend (Mostrar respuesta)
     [Skills filtrados por categoría]
     ```
 
-- [ ] **Tarea 2.4** - Crear `src/services/moderationService.ts`
+- [x] **Tarea 2.4** - Crear `src/services/moderationService.ts`
   - Función `checkOffensiveContent(message)`
   - Usar librería `bad-words-es` + lista custom
   - Lista de palabras prohibidas en ES/EN/FR
@@ -104,15 +104,15 @@ Frontend (Mostrar respuesta)
 
 ---
 
-### **FASE 3: WebSocket Chatbot**
-- [ ] **Tarea 3.1** - Crear namespace de Socket.IO para chatbot
+### **FASE 3: WebSocket Chatbot** ✅ COMPLETADA
+- [x] **Tarea 3.1** - Crear namespace de Socket.IO para chatbot
   - En `src/app.ts`, crear namespace: `/chatbot`
   ```typescript
   const chatbotNamespace = io.of('/chatbot');
   ```
   - Separar lógica del chatbot del WebSocket principal
 
-- [ ] **Tarea 3.2** - Implementar autenticación de usuario en conexión
+- [x] **Tarea 3.2** - Implementar autenticación de usuario en conexión
   - Al conectarse, cliente envía: `{ name, email }`
   - Validar formato de email
   - Obtener IP del socket: `socket.handshake.address`
@@ -120,7 +120,7 @@ Frontend (Mostrar respuesta)
   - Si bloqueada → desconectar con error
   - Si no → crear/actualizar ChatUser
 
-- [ ] **Tarea 3.3** - Implementar evento `chat_message`
+- [x] **Tarea 3.3** - Implementar evento `chat_message`
   ```typescript
   socket.on('chat_message', async (data) => {
     // data: { message: string, language: string }
@@ -134,7 +134,7 @@ Frontend (Mostrar respuesta)
   });
   ```
 
-- [ ] **Tarea 3.4** - Implementar sistema de strikes
+- [x] **Tarea 3.4** - Implementar sistema de strikes
   - 1er insulto: Advertencia + incrementar strike
   - 2do insulto: Advertencia final + incrementar strike
   - 3er insulto: Bloquear IP + guardar en BlockedIP
@@ -142,7 +142,7 @@ Frontend (Mostrar respuesta)
     - `chat_warning`: { message: "Advertencia 1/3" }
     - `chat_blocked`: { message: "IP bloqueada por lenguaje ofensivo" }
 
-- [ ] **Tarea 3.5** - Implementar emisión de respuestas
+- [x] **Tarea 3.5** - Implementar emisión de respuestas
   ```typescript
   socket.emit('chat_response', {
     message: userMessage,
@@ -204,8 +204,8 @@ Frontend (Mostrar respuesta)
 
 ---
 
-### **FASE 6: Seeders y Data Inicial**
-- [ ] **Tarea 6.1** - Crear seeder para `PortfolioSummary`
+### **FASE 6: Seeders y Data Inicial** ✅ COMPLETADA
+- [x] **Tarea 6.1** - Crear seeder para `PortfolioSummary`
   - `src/seeds/portfolioSummarySeed.ts`
   - Contenido inicial en ES/EN/FR:
     - about: "Soy Jorge Becerra (y0rshb3), desarrollador Full Stack..."
@@ -218,6 +218,7 @@ Frontend (Mostrar respuesta)
 - [ ] **Tarea 6.2** - Ejecutar seeder
   - Script: `npm run seed:portfolio-summary`
   - Verificar datos en BD
+  - ⚠️ **PENDIENTE**: Ejecutar después del deploy en servidor
 
 ---
 
@@ -352,18 +353,19 @@ src/
 
 ## ✅ Checklist de Completitud
 
-- [ ] Base de datos creada (4 entidades)
-- [ ] AI Service configurado (OpenAI o Claude)
-- [ ] Moderación funcionando (detección de insultos)
-- [ ] Bloqueo por IP implementado (3 strikes)
-- [ ] WebSocket funcionando (namespace /chatbot)
-- [ ] Contexto dinámico construido (búsqueda en BD)
-- [ ] Seeder ejecutado (PortfolioSummary con datos)
+- [x] Base de datos creada (4 entidades) ✅
+- [x] AI Service configurado (OpenAI o Claude) ✅
+- [x] Moderación funcionando (detección de insultos) ✅
+- [x] Bloqueo por IP implementado (3 strikes) ✅
+- [x] WebSocket funcionando (namespace /chatbot) ✅
+- [x] Contexto dinámico construido (búsqueda en BD) ✅
+- [x] Seeder creado (PortfolioSummary con datos) ✅
+- [ ] Seeder ejecutado en servidor ⚠️ PENDIENTE
 - [ ] Testing completo (todas las pruebas pasadas)
-- [ ] API REST implementada (alternativa)
-- [ ] Rate limiting activo (anti-spam)
-- [ ] Logs configurados (Winston)
-- [ ] Variables de entorno documentadas (.env.example)
+- [ ] API REST implementada (alternativa) - OPCIONAL
+- [ ] Rate limiting activo (anti-spam) - FASE 8
+- [ ] Logs configurados (Winston) - FASE 8
+- [x] Variables de entorno documentadas (.env.example) ✅
 
 ---
 
