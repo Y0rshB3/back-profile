@@ -12,6 +12,10 @@ const Service = require('../models/InfoService').InfoService;
 const Social = require('../models/InfoSocial').InfoSocial;
 const Contact = require('../models/contact').Contact;
 const Modules = require('../models/modules').Module;
+const ChatUser = require('../models/ChatUser').ChatUser;
+const ChatMessage = require('../models/ChatMessage').ChatMessage;
+const BlockedIP = require('../models/BlockedIP').BlockedIP;
+const PortfolioSummary = require('../models/PortfolioSummary').PortfolioSummary;
 
 /* const tempDataSource = new DataSource({
   type: "mysql",
@@ -50,6 +54,10 @@ const AppDataSource = new DataSource({
     Social,
     Contact,
     Modules,
+    ChatUser,
+    ChatMessage,
+    BlockedIP,
+    PortfolioSummary,
   ],
   synchronize: true,
 });
