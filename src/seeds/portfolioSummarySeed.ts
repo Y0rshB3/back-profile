@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { AppDataSource } from '../config/typeormConfig';
 import { PortfolioSummary } from '../models/PortfolioSummary';
 
