@@ -6,6 +6,7 @@ import { Server } from 'socket.io';
 import { AppDataSource } from './config/typeormConfig';
 import apiRouter from './routes';
 import apiRouterInfo from './routes.info';
+import { setupChatbotSocket } from './sockets/chatbotSocket';
 
 const app = express();
 const httpServer = createServer(app);
@@ -30,14 +31,17 @@ AppDataSource.initialize().then(() => {
 app.use(cors());
 app.use(express.json());
 
-// Socket.IO connection handler
+// Socket.IO connection handler (deployment notifications)
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
-  
+
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
   });
 });
+
+// Setup chatbot namespace
+setupChatbotSocket(io);
 
 // Webhook endpoint for GitHub Actions
 app.post('/api/v1/deploy-webhook', (req, res) => {
