@@ -16,6 +16,7 @@ const ChatUser = require('../models/ChatUser').ChatUser;
 const ChatMessage = require('../models/ChatMessage').ChatMessage;
 const BlockedIP = require('../models/BlockedIP').BlockedIP;
 const PortfolioSummary = require('../models/PortfolioSummary').PortfolioSummary;
+const Jorge = require('../models/Jorge').Jorge;
 
 /* const tempDataSource = new DataSource({
   type: "mysql",
@@ -58,6 +59,7 @@ const AppDataSource = new DataSource({
     ChatMessage,
     BlockedIP,
     PortfolioSummary,
+    Jorge,
   ],
   synchronize: true,
 });

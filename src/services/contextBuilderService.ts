@@ -3,6 +3,7 @@ import { PortfolioSummary } from '../models/PortfolioSummary';
 import { InfoSkill } from '../models/InfoSkill';
 import { InfoExperience } from '../models/InfoExperience';
 import { InfoPortfolio } from '../models/InfoPortfolio';
+import { Jorge } from '../models/Jorge';
 
 const MAX_CONTEXT_TOKENS = parseInt(process.env.MAX_CONTEXT_TOKENS || '2000');
 
@@ -17,6 +18,16 @@ export async function buildContext(query: string, language: string = 'es'): Prom
   let context = '';
 
   try {
+    // SIEMPRE incluir información detallada de la tabla Jorge (prioridad máxima)
+    const jorgeInfo = await getJorgeInfo(language);
+    if (jorgeInfo && jorgeInfo.length > 0) {
+      context += `=== INFORMACIÓN DETALLADA DE JORGE ===\n`;
+      jorgeInfo.forEach(info => {
+        context += `\n--- ${info.title} ---\n${info.content}\n`;
+      });
+      context += '\n';
+    }
+
     // Siempre incluir el resumen general (about)
     const aboutSummary = await getPortfolioSummary('about', language);
     if (aboutSummary) {
@@ -194,5 +205,16 @@ async function getProjects(language: string, limit: number = 3): Promise<InfoPor
   return await projectRepo.find({
     where: { language: language as any },
     take: limit
+  });
+}
+
+/**
+ * Obtiene toda la información detallada de Jorge
+ */
+async function getJorgeInfo(language: string): Promise<Jorge[]> {
+  const jorgeRepo = AppDataSource.getRepository(Jorge);
+  return await jorgeRepo.find({
+    where: { language: language as any },
+    order: { id: 'ASC' }
   });
 }
