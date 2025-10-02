@@ -105,10 +105,7 @@ export async function buildContext(query: string, language: string = 'es'): Prom
         context += `=== PROYECTOS DESTACADOS ===\n`;
         projects.forEach(proj => {
           context += `\n**${proj.title}**\n`;
-          context += `Descripción: ${proj.description}\n`;
-          if (proj.technologies) {
-            context += `Tecnologías: ${proj.technologies}\n`;
-          }
+          context += `Descripción: ${proj.subTitle}\n`;
         });
         context += '\n';
       }

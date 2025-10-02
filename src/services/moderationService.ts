@@ -52,7 +52,7 @@ export function checkOffensiveContent(message: string): {
 
     return {
       isOffensive: true,
-      detectedWords: [...new Set(detectedWords)] // Eliminar duplicados
+      detectedWords: Array.from(new Set(detectedWords)) // Eliminar duplicados
     };
   }
 
