@@ -121,7 +121,7 @@ export async function checkOffensiveContent(message: string): Promise<{
  * Verifica contenido ofensivo con caché simple para mensajes comunes
  * Esto reduce llamadas a la IA para mensajes repetidos
  */
-const moderationCache = new Map<string, { isOffensive: boolean; reason: string; severity?: string; timestamp: number }>();
+const moderationCache = new Map<string, { isOffensive: boolean; reason: string; severity?: 'low' | 'medium' | 'high'; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 60; // 1 hora
 
 export async function checkOffensiveContentCached(message: string): Promise<{
