@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import { generateResponse } from '../services/aiService';
 import { buildContext } from '../services/contextBuilderService';
-import { checkOffensiveContent } from '../services/moderationService';
+import { checkOffensiveContentCached } from '../services/moderationService';
 import {
   findOrCreateUser,
   incrementUserStrikes,
@@ -114,10 +114,10 @@ export function setupChatbotSocket(io: Server): void {
 
         console.log(`[Chatbot] Message from ${socketData.email}: ${message}`);
 
-        // Verificar contenido ofensivo
-        const moderationResult = checkOffensiveContent(message);
+        // Verificar contenido ofensivo usando IA
+        const moderationResult = await checkOffensiveContentCached(message);
         if (moderationResult.isOffensive) {
-          console.log(`[Chatbot] Offensive content detected from ${socketData.email}:`, moderationResult.detectedWords);
+          console.log(`[Chatbot] Offensive content detected from ${socketData.email}:`, moderationResult.reason, `(severity: ${moderationResult.severity})`);
 
           // Incrementar strikes
           const strikeCount = await incrementUserStrikes(socketData.userId);
@@ -126,7 +126,7 @@ export function setupChatbotSocket(io: Server): void {
             // Bloquear usuario e IP
             await blockUser(
               socketData.userId,
-              `Offensive language detected: ${moderationResult.detectedWords.join(', ')}`
+              `Offensive language detected: ${moderationResult.reason}`
             );
 
             socket.emit('chat_blocked', {
