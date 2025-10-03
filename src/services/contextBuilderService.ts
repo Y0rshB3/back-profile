@@ -188,7 +188,6 @@ async function getSkills(language: string, limit: number = 10): Promise<InfoSkil
 /**
  * Obtiene experiencias del usuario
  */
-}
 async function getExperiences(language: string, limit: number = 3): Promise<InfoExperience[]> {
   const expRepo = AppDataSource.getRepository(InfoExperience);
   
