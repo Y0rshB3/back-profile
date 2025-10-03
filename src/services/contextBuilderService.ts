@@ -188,13 +188,29 @@ async function getSkills(language: string, limit: number = 10): Promise<InfoSkil
 /**
  * Obtiene experiencias del usuario
  */
+}
 async function getExperiences(language: string, limit: number = 3): Promise<InfoExperience[]> {
   const expRepo = AppDataSource.getRepository(InfoExperience);
-  return await expRepo.find({
-    where: { language: language as any },
-    order: { id: 'DESC' }, // Más recientes primero
-    take: limit
+  
+  // Obtener todas las experiencias y ordenar manualmente
+  const experiences = await expRepo.find({
+    where: { language: language as any }
   });
+  
+  // Ordenar: primero las actuales (endDate null o "present"), luego por startDate DESC
+  experiences.sort((a, b) => {
+    const aIsCurrent = !a.endDate || a.endDate.toLowerCase() === 'present' || a.endDate.toLowerCase() === 'presente';
+    const bIsCurrent = !b.endDate || b.endDate.toLowerCase() === 'present' || b.endDate.toLowerCase() === 'presente';
+    
+    // Si uno es actual y el otro no, el actual va primero
+    if (aIsCurrent && !bIsCurrent) return -1;
+    if (!aIsCurrent && bIsCurrent) return 1;
+    
+    // Si ambos son actuales o ambos no lo son, ordenar por startDate descendente
+    return b.id - a.id;
+  });
+  
+  return experiences.slice(0, limit);
 }
 
 /**
